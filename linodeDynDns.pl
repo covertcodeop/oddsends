@@ -50,7 +50,7 @@ foreach my $domain (@domainList)
     my @resourceList = @{$jsonData->{'DATA'}};
     foreach my $resource (@resourceList)
     {
-      if($resource->{'NAME'} eq $config('HOSTNAME'))
+      if($resource->{'NAME'} eq $config{'HOSTNAME'})
       {
         print('Found it' . $resource->{'RESOURCEID'});
       };
