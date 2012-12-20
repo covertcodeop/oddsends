@@ -22,7 +22,14 @@ use warnings;
 use JSON;
 use Data::Dumper;
 
-open(FH,"<config.ini");
+my $ip = `wget -qO- ifconfig.me/ip`;
+chomp($ip);
+if(!($ip =~ /\d+\.\d+\.\d+\.\d+/))
+{
+  die('Could not reach the Internet to determine external IP address');
+};
+
+open(FH,"<config.ini") or die $!;
 my @fileContents = <FH>;
 close(FH);
 
@@ -53,7 +60,22 @@ foreach my $domain (@domainList)
       if($resource->{'NAME'} eq $config{'HOSTNAME'})
       {
         print('Found it' . $resource->{'RESOURCEID'});
+        $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&action=domainResourceSave&ResourceID=$resource->{'RESOURCEID'}&DomainID=$resource->{'DOMAINID'}&Name=$config{'HOSTNAME'}&Type=$resource->{'TYPE'}&Target=$ip"`;
+   #$WGET --post-data "api_key=$APIKEY&action=domainSave&DomainID=$DOMAINID&Domain=$DOMAIN&Type=master&Status=$STATUS&SOA_Email=$SOAEMAIL"; echo
       };
     };
 	};
 };
+
+
+# 'RESOURCEID' => 2679520,
+#            'WEIGHT' => 5,
+#            'NAME' => 'home',
+#            'DOMAINID' => 87173,
+#            'PRIORITY' => 10,
+#            'TARGET' => '0.0.0.0',
+#            'TTL_SEC' => 0,
+#            'PROTOCOL' => '',
+#            'TYPE' => 'a',
+#            'PORT' => 80
+
