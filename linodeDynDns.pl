@@ -40,6 +40,33 @@ foreach my $line (@fileContents)
   my ($key, $value) = split(/=/,$line);
   $config{$key} = $value;
 };
+
+if(-e $config{'IP_CACHE'})
+{
+	open(FH, "<".$config{'IP_CACHE'});
+	my $fileContents = <FH>;
+	close(FH);
+	if($ip eq $fileContents)
+	{
+		die("IP Address hasn't changed; nothing to do.");
+	}
+	else
+	{
+		print("Updating IP\n");
+		$fileContents = $ip;
+	};
+	open(FH, ">" . $config{'IP_CACHE'});
+	print FH $fileContents;
+	close(FH);
+}
+else
+{
+	print("Creating IP cache\n");
+	open(FH, ">" . $config{'IP_CACHE'});
+	print FH $ip;
+	close(FH);
+};
+
 my $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&action=domainList"`;
 my $jsonData = decode_json($str);
 
@@ -48,10 +75,8 @@ my $jsonData = decode_json($str);
 my @domainList = @{$jsonData->{'DATA'}};
 foreach my $domain (@domainList)
 {
-	#	print($domain);
 	if($domain->{'DOMAIN'} eq $config{'DOMAIN'})
 	{
-		print($domain->{'DOMAINID'} . "*" . $domain->{'DOMAIN'} . "\n");
     $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&action=domainResourceList&DomainID=$domain->{'DOMAINID'}"`;
     $jsonData = decode_json($str);
     my @resourceList = @{$jsonData->{'DATA'}};
@@ -59,7 +84,7 @@ foreach my $domain (@domainList)
     {
       if($resource->{'NAME'} eq $config{'HOSTNAME'})
       {
-        print('Found it' . $resource->{'RESOURCEID'});
+        print('Updating Linode: ' . $resource->{'RESOURCEID'} . "\n");
         $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&action=domainResourceSave&ResourceID=$resource->{'RESOURCEID'}&DomainID=$resource->{'DOMAINID'}&Name=$config{'HOSTNAME'}&Type=$resource->{'TYPE'}&Target=$ip"`;
    #$WGET --post-data "api_key=$APIKEY&action=domainSave&DomainID=$DOMAINID&Domain=$DOMAIN&Type=master&Status=$STATUS&SOA_Email=$SOAEMAIL"; echo
       };
