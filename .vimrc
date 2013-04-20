@@ -3,3 +3,4 @@ set shiftwidth=2
 set autoindent
 set smartindent
 color elflord
+syntax on
