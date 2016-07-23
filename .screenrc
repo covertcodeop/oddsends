@@ -1,0 +1,4 @@
+startup_message off
+caption always "%{+b rk}%H%{gk} |%c %{yk}%Y.%m.%d | %72=Load :%l %{wk}" 
+hardstatus alwayslastline "%?%{yk}%-Lw%?%{wb}%n*%f %t%?(%u)%?%?%{yk}%+Lw%?" 
+defscrollback 100000
