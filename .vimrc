@@ -1,3 +1,4 @@
+set spell spelllang=en_us
 set nocompatible
 "color scheme that i enjoy using
 colorscheme elflord
