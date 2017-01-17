@@ -1,0 +1,42 @@
+"set spell spelllang=en_us
+set nocompatible
+"Use UTF-8 encoding
+set encoding=utf8
+"color scheme that i enjoy using
+colorscheme elflord
+set history=128
+"always shows the cursor position
+set ruler
+"alters backspace behavior
+set bs=2
+"highlights found results in searches
+set hlsearch
+"incrementally searches for a string
+set incsearch
+"shows last status
+set ls=2
+"uses status line to show command competions
+set wildmenu
+"format options, allows for ease of editing comments
+set fo=cqrtn
+"shows previously/existing? commands while typing them
+set showcmd
+filetype plugin indent on
+set pastetoggle=<F10>
+"allows for syntax highlighting
+syntax on
+"vertical column line
+set colorcolumn=81
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+
+"Goal is to use tab characters and tabs are
+"8 monospace characters in width
+"set ts=8
+"set sts=8
+"set sw=8
+"set noet
+set smartindent
+map <ESC>[H <Home>
+map <ESC>[F <End>
+map <F2> aSigned-off-by: Real name <email@example.com>
