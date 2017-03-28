@@ -22,7 +22,7 @@ use warnings;
 use JSON;
 use Data::Dumper;
 
-my $ip = `wget -qO- ifconfig.me/ip`;
+my $ip = `curl ifconfig.io`;
 chomp($ip);
 if(!($ip =~ /\d+\.\d+\.\d+\.\d+/))
 {
@@ -67,7 +67,7 @@ else
 	close(FH);
 };
 
-my $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&action=domainList"`;
+my $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&api_action=domain.list"`;
 my $jsonData = decode_json($str);
 
 #print(Dumper($jsonData->{'DATA'}));
@@ -77,7 +77,7 @@ foreach my $domain (@domainList)
 {
 	if($domain->{'DOMAIN'} eq $config{'DOMAIN'})
 	{
-    $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&action=domainResourceList&DomainID=$domain->{'DOMAINID'}"`;
+    $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&api_action=domain.resource.list&DomainID=$domain->{'DOMAINID'}"`;
     $jsonData = decode_json($str);
     my @resourceList = @{$jsonData->{'DATA'}};
     foreach my $resource (@resourceList)
@@ -85,7 +85,7 @@ foreach my $domain (@domainList)
       if($resource->{'NAME'} eq $config{'HOSTNAME'})
       {
         print('Updating Linode: ' . $resource->{'RESOURCEID'} . "\n");
-        $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&action=domainResourceSave&ResourceID=$resource->{'RESOURCEID'}&DomainID=$resource->{'DOMAINID'}&Name=$config{'HOSTNAME'}&Type=$resource->{'TYPE'}&Target=$ip"`;
+        $str = `wget -qO - https://api.linode.com/api/ --post-data "api_key=$config{'API_KEY'}&api_action=domain.resource.update&ResourceID=$resource->{'RESOURCEID'}&DomainID=$resource->{'DOMAINID'}&Name=$config{'HOSTNAME'}&Type=$resource->{'TYPE'}&Target=$ip"`;
    #$WGET --post-data "api_key=$APIKEY&action=domainSave&DomainID=$DOMAINID&Domain=$DOMAIN&Type=master&Status=$STATUS&SOA_Email=$SOAEMAIL"; echo
       };
     };
