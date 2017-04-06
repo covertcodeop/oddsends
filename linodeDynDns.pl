@@ -24,7 +24,8 @@ use Data::Dumper;
 
 my $ip = `curl ifconfig.io`;
 chomp($ip);
-if(!($ip =~ /\d+\.\d+\.\d+\.\d+/))
+# regex for full ipv6 address
+if(!($ip =~ /([0-9a-f]+:)+[0-9a-f]/))
 {
   die('Could not reach the Internet to determine external IP address');
 };
