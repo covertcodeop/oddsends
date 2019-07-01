@@ -1,1 +1,7 @@
 xterm*font: *-fixed-*-*-*-18-*
+URxvt.cursorBlink:      true
+URxvt.background:       #000000
+URxvt.foreground:       AntiqueWhite
+URxvt.scrollBar:        false
+URxvt.insecure:         false
+URxvt.font:             xft:FreeMono:antialias=true
