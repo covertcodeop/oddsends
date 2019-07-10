@@ -1,7 +1,6 @@
-xterm*font: *-fixed-*-*-*-18-*
 URxvt.cursorBlink:      true
 URxvt.background:       #000000
 URxvt.foreground:       AntiqueWhite
 URxvt.scrollBar:        false
 URxvt.insecure:         false
-URxvt.font:             xft:FreeMono:antialias=true
+URxvt.font:             -gnu-unifont-medium-r-normal-sans-16-160-75-75-c-80-iso10646-1, xft:FreeMono:antialias=true
